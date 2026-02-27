@@ -3,17 +3,18 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Hexo
-subtitle: ''
-description: ''
+title: CoolStar
+subtitle: '记录每一个瞬间'
+description: '一个简单的人'
 keywords:
-author: John Doe
-language: en
+author: 清风
+language: zh_CN
 timezone: ''
 
 # URL
-## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
-url: http://example.com
+## Set your site url here. For example, if you use GitHub Page, set url as ''
+url: https://mhd250.github.io/azy-blog/
+root: /azy-blog/
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 pretty_urls:
