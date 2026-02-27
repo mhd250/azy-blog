@@ -1,11 +1,23 @@
-/* Apple Glass 苹果毛玻璃专属样式 */
-#page-header #nav {
-  background: rgba(255, 255, 255, 0.85) !important;
-  backdrop-filter: blur(12px) saturate(180%) !important;
-  -webkit-backdrop-filter: blur(12px) saturate(180%) !important;
+/* 基于你Anzhiyu真实HTML编写 · 张洪Heo同款毛玻璃 */
+/* 解除主题屏蔽，让模糊能显示 */
+#page-header {
+  overflow: visible !important;
+  contain: none !important;
 }
-#page-header.nav-fixed #nav {
-  background: rgba(255, 255, 255, 0.85) !important;
-  backdrop-filter: blur(12px) saturate(180%) !important;
-  -webkit-backdrop-filter: blur(12px) saturate(180%) !important;
+/* 顶部导航精准毛玻璃（不改动任何定位、不遮挡） */
+#page-header #nav {
+  background: rgba(255, 255, 255, 0.15) !important;
+  backdrop-filter: blur(22px) saturate(160%) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(160%) !important;
+  border-bottom: 1px solid rgba(255,255,255,0.1) !important;
+}
+/* 深色模式 */
+[data-theme="dark"] #page-header #nav {
+  background: rgba(0, 0, 0, 0.22) !important;
+  border-bottom: 1px solid rgba(255,255,255,0.05) !important;
+}
+/* 绝不影响文章、侧边栏、封面 */
+#post, .aside-content, #page-header.full_page {
+  backdrop-filter: none !important;
+  background: transparent !important;
 }
