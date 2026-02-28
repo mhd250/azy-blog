@@ -15,11 +15,7 @@
   background: rgba(0, 0, 0, 0.22) !important;
   border-bottom: 1px solid rgba(255,255,255,0.05) !important;
 }
-/* 绝不影响文章、侧边栏、封面 */
-#post, .aside-content, #page-header.full_page {
-  backdrop-filter: none !important;
-  background: transparent !important;
-}
+
 
 /* 恢复右键菜单原生模糊 */
 #rightMenu,
