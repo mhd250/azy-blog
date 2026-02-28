@@ -3,7 +3,7 @@
   overflow: visible !important;
   contain: none !important;
 }
-/* 顶部导航精准毛玻璃（不改动任何定位、不遮挡） */
+/* 顶部导航精准毛玻璃（不改动任何定位、不遮挡）*/
 #page-header #nav {
   background: rgba(255, 255, 255, 0.15) !important;
   backdrop-filter: blur(22px) saturate(160%) !important;
