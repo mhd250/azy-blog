@@ -3,7 +3,7 @@
   overflow: visible !important;
   contain: none !important;
 }
-/* 顶部导航精准毛玻璃（不改动任何定位、不遮挡）*/
+/* 顶部导航精准毛玻璃（不改动任何定位、不遮挡） */
 #page-header #nav {
   background: rgba(255, 255, 255, 0.15) !important;
   backdrop-filter: blur(22px) saturate(160%) !important;
@@ -19,4 +19,22 @@
 #post, .aside-content, #page-header.full_page {
   backdrop-filter: none !important;
   background: transparent !important;
+}
+
+/* 恢复右键菜单原生模糊 */
+#rightMenu,
+#rightmenu-mask {
+  backdrop-filter: saturate(180%) blur(20px) !important;
+  -webkit-backdrop-filter: saturate(180%) blur(20px) !important;
+  background: rgba(255, 255, 255, 0.6) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+/* 深色模式下的菜单模糊 */
+[data-theme="dark"] #rightMenu,
+[data-theme="dark"] #rightmenu-mask {
+  backdrop-filter: saturate(180%) blur(20px) !important;
+  -webkit-backdrop-filter: saturate(180%) blur(20px) !important;
+  background: rgba(0, 0, 0, 0.6) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
