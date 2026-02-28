@@ -98,7 +98,7 @@ ignore:
 # https://github.com/MoePlayer/hexo-tag-aplayer/blob/master/docs/README-zh_cn.md
 aplayer:
   meting: true
-    asset_inject: false
+  asset_inject: false
 
 # Extensions
 ## Plugins: https://hexo.io/plugins/
