@@ -34,3 +34,29 @@
   background: rgba(0, 0, 0, 0.6) !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
+/* 1. 限制头图区域高度，防止覆盖正文 */
+#page-header {
+  height: 400px !important; /* 调整为你想要的高度，比如400px，确保不覆盖正文 */
+    position: relative;
+      z-index: 1; /* 降低层级，确保正文在它上面 */
+      }
+
+      /* 2. 确保正文区域在头图之上 */
+#content-inner,
+#post {
+        position: relative;
+          z-index: 2 !important; /* 正文层级高于头图 */
+            background: var(--anzhiyu-background) !important; /* 强制正文使用主题背景色，覆盖遮罩 */
+              padding-top: 20px; /* 可选：给正文顶部加一点间距，避免和波浪重叠 */
+              }
+
+              /* 3. 修复波浪装饰的层级，让它在正文之下 */
+              .waves-area,
+              .parallax {
+                position: absolute;
+                  bottom: 0;
+                    left: 0;
+                      width: 100%;
+                        z-index: 0 !important; /* 波浪层级最低，在最下面 */
+                        }
+                        
