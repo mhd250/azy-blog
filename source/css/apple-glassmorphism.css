@@ -1,0 +1,348 @@
+/* ============================================
+   苹果风格高斯模糊效果 - Apple Glassmorphism
+   适用于安知鱼主题
+   ============================================ */
+
+/* 全局背景设置 */
+:root {
+  --apple-blur-bg: rgba(255, 255, 255, 0.72);
+  --apple-blur-bg-dark: rgba(28, 28, 30, 0.72);
+  --apple-blur-border: rgba(255, 255, 255, 0.2);
+  --apple-blur-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --apple-backdrop-filter: saturate(180%) blur(20px);
+  --apple-transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* 深色模式变量 */
+[data-theme="dark"] {
+  --apple-blur-bg: var(--apple-blur-bg-dark);
+  --apple-blur-border: rgba(255, 255, 255, 0.1);
+}
+
+/* ============================================
+   1. 顶部导航栏 - 已模糊，增强效果
+   ============================================ */
+#nav {
+  background: var(--apple-blur-bg) !important;
+  backdrop-filter: var(--apple-backdrop-filter) !important;
+  -webkit-backdrop-filter: var(--apple-backdrop-filter) !important;
+  border-bottom: 1px solid var(--apple-blur-border) !important;
+  box-shadow: var(--apple-blur-shadow) !important;
+  transition: var(--apple-transition) !important;
+}
+
+/* 导航栏滚动时的效果 */
+#nav.nav-scroll {
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: saturate(180%) blur(25px) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+}
+
+[data-theme="dark"] #nav.nav-scroll {
+  background: rgba(28, 28, 30, 0.85) !important;
+}
+
+/* ============================================
+   2. 文章卡片 - 添加毛玻璃效果
+   ============================================ */
+#recent-posts .recent-post-item,
+.article-sort-item,
+#archive .article-sort-item {
+  background: var(--apple-blur-bg) !important;
+  backdrop-filter: var(--apple-backdrop-filter) !important;
+  -webkit-backdrop-filter: var(--apple-backdrop-filter) !important;
+  border: 1px solid var(--apple-blur-border) !important;
+  border-radius: 16px !important;
+  box-shadow: var(--apple-blur-shadow) !important;
+  transition: var(--apple-transition) !important;
+  overflow: hidden !important;
+}
+
+#recent-posts .recent-post-item:hover,
+.article-sort-item:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* 文章内容区域 */
+#post-info,
+#post-content,
+#post-comment {
+  background: var(--apple-blur-bg) !important;
+  backdrop-filter: var(--apple-backdrop-filter) !important;
+  -webkit-backdrop-filter: var(--apple-backdrop-filter) !important;
+  border: 1px solid var(--apple-blur-border) !important;
+  border-radius: 20px !important;
+  box-shadow: var(--apple-blur-shadow) !important;
+}
+
+/* ============================================
+   3. 侧边栏组件 - 毛玻璃效果
+   ============================================ */
+#aside-content .card-widget {
+  background: var(--apple-blur-bg) !important;
+  backdrop-filter: var(--apple-backdrop-filter) !important;
+  -webkit-backdrop-filter: var(--apple-backdrop-filter) !important;
+  border: 1px solid var(--apple-blur-border) !important;
+  border-radius: 16px !important;
+  box-shadow: var(--apple-blur-shadow) !important;
+  transition: var(--apple-transition) !important;
+  margin-bottom: 16px !important;
+}
+
+#aside-content .card-widget:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* 个人信息卡片 */
+#aside-content .card-info {
+  background: linear-gradient(135deg, 
+    rgba(102, 126, 234, 0.8) 0%, 
+    rgba(118, 75, 162, 0.8) 100%) !important;
+  backdrop-filter: var(--apple-backdrop-filter) !important;
+}
+
+/* ============================================
+   4. 分类和标签卡片
+   ============================================ */
+.category-lists .category-list-item,
+.tag-list-item {
+  background: var(--apple-blur-bg) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  border: 1px solid var(--apple-blur-border) !important;
+  border-radius: 12px !important;
+  transition: var(--apple-transition) !important;
+}
+
+.category-lists .category-list-item:hover,
+.tag-list-item:hover {
+  background: rgba(255, 255, 255, 0.9) !important;
+  transform: scale(1.05) !important;
+}
+
+/* ============================================
+   5. 页脚 - 毛玻璃效果
+   ============================================ */
+#footer {
+  background: var(--apple-blur-bg) !important;
+  backdrop-filter: var(--apple-backdrop-filter) !important;
+  -webkit-backdrop-filter: var(--apple-backdrop-filter) !important;
+  border-top: 1px solid var(--apple-blur-border) !important;
+}
+
+/* ============================================
+   6. 弹窗和模态框
+   ============================================ */
+.modal-content,
+.popover,
+.tooltip-inner {
+  background: var(--apple-blur-bg) !important;
+  backdrop-filter: var(--apple-backdrop-filter) !important;
+  -webkit-backdrop-filter: var(--apple-backdrop-filter) !important;
+  border: 1px solid var(--apple-blur-border) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* ============================================
+   7. 搜索框
+   ============================================ */
+#local-search .search-dialog {
+  background: var(--apple-blur-bg) !important;
+  backdrop-filter: saturate(180%) blur(30px) !important;
+  -webkit-backdrop-filter: saturate(180%) blur(30px) !important;
+  border: 1px solid var(--apple-blur-border) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.25) !important;
+}
+
+#local-search .search-input {
+  background: rgba(255, 255, 255, 0.5) !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid var(--apple-blur-border) !important;
+  border-radius: 12px !important;
+  transition: var(--apple-transition) !important;
+}
+
+#local-search .search-input:focus {
+  background: rgba(255, 255, 255, 0.8) !important;
+  box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.2) !important;
+}
+
+/* ============================================
+   8. 代码块
+   ============================================ */
+.highlight {
+  background: rgba(40, 44, 52, 0.85) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  overflow: hidden !important;
+}
+
+/* ============================================
+   9. 按钮 - 玻璃拟态
+   ============================================ */
+.button--primary,
+#pagination .pagination a,
+#pagination .pagination span {
+  background: var(--apple-blur-bg) !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid var(--apple-blur-border) !important;
+  border-radius: 12px !important;
+  transition: var(--apple-transition) !important;
+}
+
+.button--primary:hover,
+#pagination .pagination a:hover {
+  background: rgba(255, 255, 255, 0.9) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* ============================================
+   10. 音乐播放器
+   ============================================ */
+.aplayer {
+  background: var(--apple-blur-bg) !important;
+  backdrop-filter: var(--apple-backdrop-filter) !important;
+  -webkit-backdrop-filter: var(--apple-backdrop-filter) !important;
+  border: 1px solid var(--apple-blur-border) !important;
+  border-radius: 16px !important;
+  box-shadow: var(--apple-blur-shadow) !important;
+}
+
+.aplayer-list {
+  background: rgba(255, 255, 255, 0.5) !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+/* ============================================
+   11. 返回顶部按钮
+   ============================================ */
+#go-up {
+  background: var(--apple-blur-bg) !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid var(--apple-blur-border) !important;
+  border-radius: 50% !important;
+  box-shadow: var(--apple-blur-shadow) !important;
+  transition: var(--apple-transition) !important;
+}
+
+#go-up:hover {
+  transform: translateY(-4px) scale(1.1) !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* ============================================
+   12. 目录导航
+   ============================================ */
+#toc {
+  background: var(--apple-blur-bg) !important;
+  backdrop-filter: var(--apple-backdrop-filter) !important;
+  -webkit-backdrop-filter: var(--apple-backdrop-filter) !important;
+  border: 1px solid var(--apple-blur-border) !important;
+  border-radius: 16px !important;
+  box-shadow: var(--apple-blur-shadow) !important;
+}
+
+/* ============================================
+   13. 滚动条美化
+   ============================================ */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  backdrop-filter: blur(10px);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ============================================
+   14. 移动端适配
+   ============================================ */
+@media screen and (max-width: 768px) {
+  #nav {
+    backdrop-filter: saturate(180%) blur(15px) !important;
+  }
+
+  #recent-posts .recent-post-item,
+  #aside-content .card-widget {
+    backdrop-filter: blur(15px) !important;
+    border-radius: 12px !important;
+  }
+}
+
+/* ============================================
+   15. 性能优化
+   ============================================ */
+/* 使用will-change优化动画性能 */
+#nav,
+#recent-posts .recent-post-item,
+#aside-content .card-widget,
+#go-up {
+  will-change: transform, box-shadow;
+}
+
+/* 减少动画对性能的影响 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================
+   16. 特殊效果 - 动态背景（可选）
+   ============================================ */
+/* 为首页添加微妙的动态渐变背景 */
+#body-wrap::before {
+  content: '';
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.05) 0%, transparent 40%);
+  animation: gradient-rotate 30s linear infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@keyframes gradient-rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* 禁用动态背景（如果用户喜欢静态） */
+.no-gradient #body-wrap::before {
+  display: none;
+}
