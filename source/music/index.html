@@ -5,22 +5,31 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CoolMusic-音乐馆</title>
-  <link rel="stylesheet" type="text/css" href="./css/APlayer.css">
-  <link rel="stylesheet" type="text/css" href="./css/main.css">
-  <link rel="icon" type="image/x-icon" href="./img/icon.webp">
+
+  <!--
+    注意:这里用相对路径(./css/...)而不是 /(根路径)
+    hexo 子路径 /azy-blog/ 下,根路径 /css/xxx 会 404
+    相对路径在 /music/ 目录下解析成 /music/css/xxx,完全正确
+  -->
+  <link rel="stylesheet" href="./css/APlayer.css">
+  <link rel="stylesheet" href="./css/main.css">
+
+  <link rel="icon" type="image/webp" href="./img/icon.webp">
   <link rel="apple-touch-icon" href="./img/icon-r.webp">
-  <meta name="apple-mobile-web-app-title" content="音乐">
   <link rel="bookmark" href="./img/icon.webp">
   <link rel="apple-touch-icon-precomposed" sizes="180x180" href="./img/icon-r.webp">
+  <link rel="manifest" href="./manifest.json">
+  <meta name="apple-mobile-web-app-title" content="音乐">
   <meta name="description" content="灵动的音乐播放器。">
-  <link rel="manifest" href="/manifest.json"> 
   <meta name="theme-color" content="#000000">
 </head>
 <body>
-<div id="heoMusic-page">
-</div>
-<script src="./config.js"></script>
-<script src="./js/APlayer.min.js"></script>
-<script async data-pjax src="./js/main.js"></script>
+  <div id="heoMusic-page"></div>
+
+  <!-- config.js 必须先于 main.js 加载!这是之前 404 的根因 -->
+  <script src="./config.js"></script>
+  <script src="./js/APlayer.min.js"></script>
+  <!-- pjax 兼容 -->
+  <script async data-pjax src="./js/main.js"></script>
 </body>
 </html>

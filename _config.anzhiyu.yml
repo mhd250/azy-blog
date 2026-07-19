@@ -989,7 +989,9 @@ icons:
 pjax:
   enable: true
   exclude:
-    # - xxxx
+    # 自定义 HeoMusic 页面,跳出 pjax,做整页加载,避免静态 HTML 错位
+    - /music/
+    - /music/index.html
     # - xxxx
 
 # Inject the css and script (aplayer/meting)
@@ -1250,8 +1252,8 @@ dynamicEffect:
 # 插入代码到头部 </head> 之前 和 底部 </body> 之前
 inject:
   head:
-    # 自定义css
-    #- <link rel="stylesheet" href="/azy-blog/css/apple-glass.css" media="print" onload="this.media='all'">
+    # 自定义css - 苹果风毛玻璃(整合版)
+    - <link rel="stylesheet" href="/azy-blog/css/glass.css">
 
   bottom:
     # 自定义js
