@@ -1,233 +1,219 @@
 /* ==========================================================================
-   Apple Glass - 整合版 v2
-   安知鱼主题 | 苹果风毛玻璃 | 深浅色双适配 | 性能优先
-   整合自原 apple-glass.css + apple-glassmorphism.css
+   Apple Glass v3 - 修复版
+   问题原因: 主题 CSS 未分层,而我用了 @layer,根据 CSS 规范"无层 > 有层",
+            导致我所有规则被主题覆盖。v3 完全去掉 @layer,用 !important 关键属性。
+   另外: 主题用了 transform: translateZ(0) 会破坏 backdrop-filter,需覆盖。
    ========================================================================== */
 
-/* 用 @layer 管理优先级,避免到处写 !important */
-@layer reset, base, nav, aside, cards, scrollbar, motion, mobile, perf;
+/* ---------- 0. 关键:覆盖主题的合成层(否则 backdrop-filter 看不见背后) ---------- */
+#page-header.nav-fixed #nav,
+#page-header.full-page #nav {
+  transform: none !important;
+  -webkit-transform: none !important;
+}
 
-/* ---------- 1. CSS 变量(单一数据源) ---------- */
-@layer base {
-  :root {
-    /* 浅色玻璃 */
-    --glass-bg:        rgba(255, 255, 255, 0.62);
-    --glass-bg-solid:  rgba(255, 255, 255, 0.88);   /* 滚动后用 */
-    --glass-border:    rgba(255, 255, 255, 0.28);
-    --glass-border-dk: rgba(0, 0, 0, 0.06);
-    --glass-shadow:    0 4px 24px rgba(0, 0, 0, 0.06);
-    --glass-shadow-hi: 0 10px 32px rgba(0, 0, 0, 0.12);
+/* ---------- 1. 基础颜色变量(深浅色) ---------- */
+:root {
+  --glass-bg:        rgba(255, 255, 255, 0.62);
+  --glass-bg-solid:  rgba(255, 255, 255, 0.88);
+  --glass-border:    rgba(255, 255, 255, 0.28);
+  --glass-border-dk: rgba(0, 0, 0, 0.06);
+  --glass-shadow:    0 4px 24px rgba(0, 0, 0, 0.06);
+  --glass-shadow-hi: 0 10px 32px rgba(0, 0, 0, 0.12);
+  --glass-ease:      cubic-bezier(0.25, 0.8, 0.25, 1);
+  --glass-dur:       0.3s;
+  --glass-accent:    #425AEF;
+}
 
-    /* 玻璃滤镜 */
-    --glass-filter:    saturate(180%) blur(20px);
-    --glass-filter-hi: saturate(180%) blur(28px);
-
-    /* 动画曲线 */
-    --glass-ease:      cubic-bezier(0.25, 0.8, 0.25, 1);
-    --glass-dur:       0.3s;
-
-    /* 强调色(配合主题主色) */
-    --glass-accent:    var(--anzhiyu-main, #425AEF);
-  }
-
-  [data-theme="dark"] {
-    --glass-bg:        rgba(24, 23, 29, 0.62);   /* 对应 #18171d,主题暗色主背景 */
-    --glass-bg-solid:  rgba(24, 23, 29, 0.88);
-    --glass-border:    rgba(255, 255, 255, 0.10);
-    --glass-border-dk: rgba(255, 255, 255, 0.06);
-    --glass-shadow:    0 4px 24px rgba(0, 0, 0, 0.32);
-    --glass-shadow-hi: 0 10px 32px rgba(0, 0, 0, 0.48);
-  }
+[data-theme="dark"] {
+  --glass-bg:        rgba(24, 23, 29, 0.62);
+  --glass-bg-solid:  rgba(24, 23, 29, 0.88);
+  --glass-border:    rgba(255, 255, 255, 0.10);
+  --glass-border-dk: rgba(255, 255, 255, 0.06);
+  --glass-shadow:    0 4px 24px rgba(0, 0, 0, 0.32);
+  --glass-shadow-hi: 0 10px 32px rgba(0, 0, 0, 0.48);
 }
 
 /* ---------- 2. 解除主题对 page-header 的限制 ---------- */
-@layer reset {
-  /* 主题的 contain 把模糊裁掉了,必须解除 */
-  #page-header {
-    overflow: visible;
-    contain: none;
-  }
+#page-header {
+  overflow: visible !important;
+  contain: none !important;
 }
 
 /* ---------- 3. 顶部导航栏(核心需求) ---------- */
-@layer nav {
+/* 注意: 不用变量 var(--glass-bg) 直接给 rgba(),用 var() 时主题 var()
+         可能被解析成有问题的值,直接给死值最稳。                       */
+
+#page-header.nav-fixed #nav,
+#page-header.not-top-img #nav {
+  background: rgba(255, 255, 255, 0.62) !important;
+  -webkit-backdrop-filter: saturate(180%) blur(20px) !important;
+  backdrop-filter: saturate(180%) blur(20px) !important;
+  outline: 1px solid rgba(0, 0, 0, 0.06) !important;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06) !important;
+  transition: background 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+              box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+              backdrop-filter 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+}
+
+/* 滚动后加深 */
+#page-header.nav-fixed #nav.nav-scroll,
+#page-header.not-top-img #nav.nav-scroll {
+  background: rgba(255, 255, 255, 0.88) !important;
+  -webkit-backdrop-filter: saturate(180%) blur(28px) !important;
+  backdrop-filter: saturate(180%) blur(28px) !important;
+  box-shadow: 0 6px 28px rgba(0, 0, 0, 0.10) !important;
+}
+
+/* 首页有 banner 时,顶栏完全透明 */
+#page-header.full-page #nav {
+  background: transparent !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  outline: 1px solid transparent !important;
+  box-shadow: none !important;
+}
+
+/* ---------- 4. 深色模式 ---------- */
+[data-theme="dark"] #page-header.nav-fixed #nav,
+[data-theme="dark"] #page-header.not-top-img #nav {
+  background: rgba(24, 23, 29, 0.62) !important;
+  outline: 1px solid rgba(255, 255, 255, 0.06) !important;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.32) !important;
+}
+
+[data-theme="dark"] #page-header.nav-fixed #nav.nav-scroll,
+[data-theme="dark"] #page-header.not-top-img #nav.nav-scroll {
+  background: rgba(24, 23, 29, 0.88) !important;
+  box-shadow: 0 6px 28px rgba(0, 0, 0, 0.45) !important;
+}
+
+/* ---------- 5. 菜单文字可读性 ---------- */
+[data-theme="dark"] #nav .menus_item a,
+[data-theme="dark"] #nav .site-name,
+[data-theme="dark"] #nav #search-button > a,
+[data-theme="dark"] #nav #toggle-menu {
+  color: rgba(255, 255, 255, 0.88) !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+[data-theme="dark"] #nav .menus_item a:hover,
+[data-theme="dark"] #nav #search-button > a:hover {
+  color: #f2b94b !important;
+  text-shadow: none;
+}
+
+/* ---------- 6. 不支持 backdrop-filter 的浏览器降级 ---------- */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   #page-header.nav-fixed #nav,
   #page-header.not-top-img #nav {
-    background: var(--glass-bg);
-    -webkit-backdrop-filter: var(--glass-filter);
-    backdrop-filter: var(--glass-filter);
-    border-bottom: 1px solid var(--glass-border-dk);
-    box-shadow: var(--glass-shadow);
-    transition: background var(--glass-dur) var(--glass-ease),
-                box-shadow var(--glass-dur) var(--glass-ease),
-                backdrop-filter var(--glass-dur) var(--glass-ease);
+    background: rgba(255, 255, 255, 0.95) !important;
   }
-
-  /* 滚动后:加深玻璃,加大模糊,加阴影 */
-  #nav.nav-scroll,
-  #page-header.nav-fixed #nav.nav-scroll {
-    background: var(--glass-bg-solid);
-    -webkit-backdrop-filter: var(--glass-filter-hi);
-    backdrop-filter: var(--glass-filter-hi);
-    box-shadow: 0 6px 28px rgba(0, 0, 0, 0.10);
-  }
-
-  [data-theme="dark"] #nav.nav-scroll,
-  [data-theme="dark"] #page-header.nav-fixed #nav.nav-scroll {
-    box-shadow: 0 6px 28px rgba(0, 0, 0, 0.45);
-  }
-
-  /* 首页有 banner 时,顶栏完全透明,滚动后玻璃化 */
-  #page-header.full-page #nav {
-    background: transparent;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    border-bottom: 1px solid transparent;
-  }
-
-  /* 菜单文字在玻璃上的可读性保险 */
-  [data-theme="dark"] #nav .menus_item a,
-  [data-theme="dark"] #nav .site-name,
-  [data-theme="dark"] #nav #search-button > a,
-  [data-theme="dark"] #nav #toggle-menu {
-    color: rgba(255, 255, 255, 0.88);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
-  }
-
-  [data-theme="dark"] #nav .menus_item a:hover,
-  [data-theme="dark"] #nav #search-button > a:hover {
-    color: var(--glass-accent);
-    text-shadow: none;
-  }
-
-  /* 不支持 backdrop-filter 的浏览器降级 */
-  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-    #page-header.nav-fixed #nav {
-      background: rgba(255, 255, 255, 0.95);
-    }
-    [data-theme="dark"] #page-header.nav-fixed #nav {
-      background: rgba(24, 23, 29, 0.96);
-    }
+  [data-theme="dark"] #page-header.nav-fixed #nav,
+  [data-theme="dark"] #page-header.not-top-img #nav {
+    background: rgba(24, 23, 29, 0.96) !important;
   }
 }
 
-/* ---------- 4. 侧边栏卡片(轻玻璃) ---------- */
-@layer aside {
-  /* 卡片底色统一改成玻璃,圆角统一 */
-  #aside-content .card-widget,
-  #aside-content .sticky_layout > div {
-    background: var(--glass-bg);
-    -webkit-backdrop-filter: saturate(160%) blur(16px);
-    backdrop-filter: saturate(160%) blur(16px);
-    border: 1px solid var(--glass-border);
-    border-radius: 14px;
-    box-shadow: var(--glass-shadow);
-    transition: transform var(--glass-dur) var(--glass-ease),
-                box-shadow var(--glass-dur) var(--glass-ease);
-  }
+/* ---------- 7. 侧边栏卡片(轻玻璃) ---------- */
+#aside-content .card-widget,
+#aside-content .sticky_layout > div {
+  background: rgba(255, 255, 255, 0.62) !important;
+  -webkit-backdrop-filter: saturate(160%) blur(16px) !important;
+  backdrop-filter: saturate(160%) blur(16px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.28) !important;
+  border-radius: 14px !important;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06) !important;
+  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+              box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+}
 
-  #aside-content .card-widget:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--glass-shadow-hi);
-  }
+#aside-content .card-widget:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.12) !important;
+}
 
-  /* 头像卡片保持原本的彩色渐变(主题里已经很好看,别动) */
-  #aside-content .card-info {
-    background: linear-gradient(135deg,
-      rgba(102, 126, 234, 0.85) 0%,
-      rgba(118, 75, 162, 0.85) 100%);
+[data-theme="dark"] #aside-content .card-widget,
+[data-theme="dark"] #aside-content .sticky_layout > div {
+  background: rgba(24, 23, 29, 0.62) !important;
+  border-color: rgba(255, 255, 255, 0.10) !important;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.32) !important;
+}
+
+/* 头像卡片保持原渐变,不动 */
+#aside-content .card-info {
+  background: linear-gradient(135deg,
+    rgba(102, 126, 234, 0.85) 0%,
+    rgba(118, 75, 162, 0.85) 100%) !important;
+}
+
+/* ---------- 8. 文章卡(轻玻璃,只加边框和 hover 动效,不上 backdrop) ---------- */
+#recent-posts .recent-post-item,
+.article-sort-item {
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+  border-radius: 14px !important;
+  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+              box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+              border-color 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+}
+
+#recent-posts .recent-post-item:hover,
+.article-sort-item:hover {
+  transform: translateY(-3px) !important;
+  border-color: rgba(0, 122, 255, 0.3) !important;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.12) !important;
+}
+
+[data-theme="dark"] #recent-posts .recent-post-item,
+[data-theme="dark"] .article-sort-item {
+  border-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+[data-theme="dark"] #recent-posts .recent-post-item:hover,
+[data-theme="dark"] .article-sort-item:hover {
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.48) !important;
+}
+
+/* ---------- 9. 滚动条 ---------- */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.18);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover { background: #425AEF; }
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.20);
+}
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover { background: #f2b94b; }
+
+/* ---------- 10. 选中文本 ---------- */
+::selection {
+  background: #425AEF;
+  color: #fff;
+}
+[data-theme="dark"] ::selection {
+  background: #f2b94b;
+  color: #1a1a1a;
+}
+
+/* ---------- 11. 动效降级(尊重无障碍偏好) ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
   }
 }
 
-/* ---------- 5. 首页文章卡(轻玻璃,不上 backdrop-filter 保性能) ---------- */
-@layer cards {
-  /* 只加边框+圆角+hover 动效,不加 backdrop,避免滚动卡顿 */
-  #recent-posts .recent-post-item,
-  .article-sort-item {
-    border: 1px solid var(--glass-border-dk);
-    border-radius: 14px;
-    transition: transform var(--glass-dur) var(--glass-ease),
-                box-shadow var(--glass-dur) var(--glass-ease),
-                border-color var(--glass-dur) var(--glass-ease);
+/* ---------- 12. 移动端(降低 blur 半径省 GPU) ---------- */
+@media screen and (max-width: 768px) {
+  #page-header.nav-fixed #nav {
+    -webkit-backdrop-filter: saturate(180%) blur(14px) !important;
+    backdrop-filter: saturate(180%) blur(14px) !important;
   }
-
-  #recent-posts .recent-post-item:hover,
-  .article-sort-item:hover {
-    transform: translateY(-3px);
-    border-color: var(--glass-border);
-    box-shadow: var(--glass-shadow-hi);
-  }
-
-  [data-theme="dark"] #recent-posts .recent-post-item,
-  [data-theme="dark"] .article-sort-item {
-    border-color: rgba(255, 255, 255, 0.06);
-  }
-
-  [data-theme="dark"] #recent-posts .recent-post-item:hover,
-  [data-theme="dark"] .article-sort-item:hover {
-    border-color: rgba(255, 255, 255, 0.14);
-  }
-}
-
-/* ---------- 6. 滚动条(Webkit) ---------- */
-@layer scrollbar {
-  ::-webkit-scrollbar { width: 8px; height: 8px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.18);
-    border-radius: 4px;
-    /* Webkit 滚动条不支持 backdrop-filter,这里只设背景 */
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: var(--glass-accent);
-  }
-  [data-theme="dark"] ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.20);
-  }
-  [data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
-    background: var(--glass-accent);
-  }
-}
-
-/* ---------- 7. 微动效与降级 ---------- */
-@layer motion {
-  @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-    }
-  }
-}
-
-/* ---------- 8. 移动端适配 ---------- */
-@layer mobile {
-  @media screen and (max-width: 768px) {
-    /* 移动端降低 blur 半径,省 GPU */
-    #page-header.nav-fixed #nav {
-      backdrop-filter: saturate(180%) blur(14px);
-      -webkit-backdrop-filter: saturate(180%) blur(14px);
-    }
-    #aside-content .card-widget {
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border-radius: 12px;
-    }
-  }
-}
-
-/* ---------- 9. 性能优化(只对实际需要 GPU 加速的元素) ---------- */
-@layer perf {
-  /* 只给 hover 会动的元素加 will-change,不要乱加 */
-  #nav,
-  #recent-posts .recent-post-item,
   #aside-content .card-widget {
-    will-change: transform;
-  }
-  /* hover 结束后释放图层 */
-  #recent-posts .recent-post-item:hover {
-    will-change: auto;
+    -webkit-backdrop-filter: blur(10px) !important;
+    backdrop-filter: blur(10px) !important;
   }
 }
